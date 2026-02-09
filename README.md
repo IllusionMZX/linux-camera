@@ -1,5 +1,5 @@
-# Qt-based Embedded Linux Automotive Dashboard System
-# 基于QT的嵌入式Linux车载仪表板
+# Embedded Linux Camera System
+# 嵌入式Linux相机系统
 
 <div align="center">
 
@@ -21,16 +21,13 @@
 
 ### 🚗 Project Overview
 
-`TopCarBoard_M` is a comprehensive Qt-based automotive dashboard system designed for embedded Linux platforms. The system integrates multiple functionalities including GPS navigation, IMU sensor monitoring, camera feed processing, map visualization, and weather information display.
+`Linux_Camera` is a Qt-based embedded Linux camera system designed for embedded Linux platforms. The system integrates camera feed processing, GPS positioning, and IMU sensor monitoring capabilities, providing a comprehensive solution for embedded camera applications.
 
 ### 🎯 Key Features
 
-- **Real-time Dashboard** - Interactive instrument panel with speed, fuel, and temperature gauges
-- **GPS Navigation** - NMEA protocol parsing with coordinate and speed display
+- **USB Camera Integration** - Real-time video capture with YUV to RGB conversion
+- **GPS Positioning** - NMEA protocol parsing with coordinate and speed display
 - **IMU Monitoring** - Real-time accelerometer, gyroscope, and angle data visualization
-- **Camera Integration** - USB camera feed with YUV to RGB conversion
-- **Map Display** - Interactive map with tile-based rendering using QMapControl
-- **Weather Information** - Real-time weather data with graphical interface
 - **Modular Architecture** - Clean separation of concerns with dedicated modules
 
 ### 🏗️ System Architecture
@@ -58,12 +55,9 @@ graph TB
         L[MainWidget - Central Control]
         
         subgraph "Functional Modules"
-            M[Dashboard Widget]
             N[GPS Process]
             O[IMU Process]
             P[UVC Camera]
-            Q[Map Demo]
-            R[Weather Module]
         end
         
         subgraph "Qt Framework"
@@ -76,7 +70,6 @@ graph TB
     
     subgraph "Data Flow"
         W[Serial Data Stream]
-        X[Network Data]
         Y[Video Stream]
         Z[User Interaction]
     end
@@ -89,23 +82,15 @@ graph TB
     W --> N
     W --> O
     Y --> P
-    X --> R
-    X --> Q
     Z --> L
     
-    L --> M
     L --> N
     L --> O
     L --> P
-    L --> Q
-    L --> R
     
-    M --> E
     N --> E
     O --> E
     P --> E
-    Q --> E
-    R --> E
 ```
 
 ### 🛠️ Development Environment
@@ -132,21 +117,11 @@ graph TB
 ### 📁 Project Structure
 
 ```
-TopCarBoard_M/
+Linux_Camera/
 ├── 📁 Root Directory
 │   ├── main.cpp                    # Application entry point
-│   ├── mainwidget.cpp/.h          # Main menu interface
-│   └── TopCarBoard_M.pro          # Qt project configuration
-│
-├── 📊 Dashboard/                   # Instrument panel module
-│   ├── widget.cpp/.h/.ui          # Dashboard UI implementation
-│   ├── res.qrc                    # Resource file
-│   └── 🖼️ icons/                  # Dashboard icons and images
-│
-├── 🗺️ QMapDemo/                   # Map display module
-│   ├── multidemo.cpp/.h           # Map widget implementation
-│   ├── gps_modul.cpp/.h           # GPS integration
-│   └── src/QMapControl/           # Open-source QMapControl library
+│   ├── mainwidget.cpp/.h          # Main interface
+│   └── Linux_Camera.pro          # Qt project configuration
 │
 ├── 📡 GPSProcess/                  # GPS data processing
 │   ├── GPSProcess.cpp/.h          # NMEA protocol parsing
@@ -161,31 +136,17 @@ TopCarBoard_M/
 │   ├── videodevice.cpp/.h         # V4L2 camera interface
 │   └── YUV to RGB conversion
 │
-├── 🌤️ Weather/                    # Weather information
-│   ├── mainwindow.cpp/.h/.ui      # Weather UI
-│   ├── weatherdata.h              # Data structures
-│   └── Network-based weather API
-│
 └── 🔧 bin/                        # Compiled executables
-    └── TopCarBoard_M
+    └── Linux_Camera
 ```
 
 ### 🔧 Module Descriptions
 
 #### 🏠 MainWidget (Central Control)
-- **Purpose**: Main menu interface with 6 functional modules
+- **Purpose**: Main interface with functional modules
 - **Features**: 
-  - Grid-based icon layout (2×3)
   - Module navigation and window management
   - Resource management with automatic cleanup
-
-#### 📊 Dashboard Module
-- **Purpose**: Real-time instrument panel display
-- **Features**:
-  - Analog speedometer with needle animation
-  - Fuel level and temperature gauges
-  - LED indicator controls (turn signals, hazard lights)
-  - ADC-based speed input from potentiometer
 
 #### 📡 GPS Processing Module
 - **Purpose**: Real-time GPS data acquisition and parsing
@@ -212,23 +173,6 @@ TopCarBoard_M/
   - YUV422 to RGB24 color space conversion
   - Frame rate optimization
   - Error handling and device management
-
-#### 🗺️ Map Display Module
-- **Purpose**: Interactive map visualization
-- **Technology**: QMapControl library
-- **Features**:
-  - Tile-based map rendering
-  - Online map data fetching
-  - GPS position overlay
-  - Zoom and pan functionality
-
-#### 🌤️ Weather Module
-- **Purpose**: Real-time weather information display
-- **Features**:
-  - Network-based weather API integration
-  - Temperature and humidity display
-  - Weather icon visualization
-  - JSON data parsing
 
 ### 🚀 Installation and Setup
 
@@ -272,7 +216,7 @@ In Ubuntu 16.04 environment:
 
 ```bash
 # Navigate to project directory
-cd TopCarBoard_M/
+cd Linux_Camera/
 
 # Generate Makefile
 qmake
@@ -305,20 +249,17 @@ make
    ```bash
    # Copy project to USB drive, then to board
    # On the target board:
-   chmod +x TopCarBoard_M
-   ./TopCarBoard_M
+   chmod +x Linux_Camera
+   ./Linux_Camera
    ```
 
 ### 🧪 Testing and Validation
 
 | Module | Test Criteria |
 |--------|---------------|
-| **Dashboard** | LED control, speedometer response to ADC input |
 | **GPS** | Coordinate accuracy, speed calculation |
 | **Camera** | Real-time video feed, color conversion |
 | **IMU** | Motion detection, collision alerts |
-| **Map** | Tile loading, GPS position overlay |
-| **Weather** | Network connectivity, data parsing |
 
 ### ⚙️ Configuration Notes
 
@@ -329,55 +270,7 @@ make
 
 ### 🎬 System Demonstration
 
-The following images showcase the real-world functionality of the TopCarBoard_M system:
-
-#### 📱 Main Interface
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image1.jpg" alt="Main Interface" width="600">
-<p><em>Main menu interface with 6 functional modules arranged in a 2×3 grid layout</em></p>
-</div>
-
-#### 📊 Dashboard Panel
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image2.png" alt="Dashboard Panel" width="600">
-<p><em>Interactive dashboard with LED controls - checkboxes synchronize with turn signals and hazard lights. Speed updates by rotating the potentiometer to adjust ADC voltage values</em></p>
-</div>
-
-#### 📹 USB Camera Live Feed
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image3.png" alt="USB Camera" width="600">
-<p><em>Real-time video capture from USB camera with YUV to RGB conversion</em></p>
-</div>
-
-#### 🗺️ Interactive Map Display
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image4.png" alt="Map Display" width="600">
-<p><em>Real-time map loading with mouse and scroll wheel navigation. Tile-based rendering for smooth interaction</em></p>
-</div>
-
-#### 📱 IMU Sensor Data Visualization
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image5.png" alt="IMU Data" width="600">
-<p><em>Three-axis accelerometer, gyroscope, and attitude angle data display from IMU sensor</em></p>
-</div>
-
-#### ⚠️ Motion Detection Alert
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image6.png" alt="Motion Alert" width="600">
-<p><em>IMU motion detection in action - buzzer alerts and warning messages appear when rapid acceleration changes are detected (simulated by shaking the IMU sensor)</em></p>
-</div>
-
-#### 📡 GPS Positioning System
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image7.png" alt="GPS Positioning" width="600">
-<p><em>GPS location data display showing current coordinates. Accuracy verified against mobile phone GPS readings</em></p>
-</div>
-
-#### 🌤️ Weather & Time Information
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image8.png" alt="Weather Display" width="600">
-<p><em>Network-based real-time weather and time information display</em></p>
-</div>
+The system provides real-world functionality including camera feed processing, GPS positioning, and IMU sensor monitoring.
 
 ### 🔧 Troubleshooting
 
@@ -401,15 +294,13 @@ The following images showcase the real-world functionality of the TopCarBoard_M 
 
 ### 🚗 项目概述
 
-`TopCarBoard_M` 是一个基于 Qt 的综合性车载仪表盘系统，专为嵌入式 Linux 平台设计。系统集成了多种功能，包括 GPS 导航、IMU 传感器监控、摄像头图像处理、地图可视化和天气信息显示。
+`Linux_Camera` 是一个嵌入式 Linux 相机系统，专为嵌入式 Linux 平台设计。系统集成了相机图像处理、GPS 定位和 IMU 传感器监控功能，为嵌入式相机应用提供了全面的解决方案。
+
 ### 🎯 核心功能
 
-- **实时仪表盘** - 交互式仪表板，包含速度、燃油和温度表
-- **GPS 导航** - NMEA 协议解析，显示坐标和速度信息
+- **USB 相机集成** - 实时视频捕获，YUV 到 RGB 转换
+- **GPS 定位** - NMEA 协议解析，显示坐标和速度信息
 - **IMU 监控** - 实时加速度计、陀螺仪和角度数据可视化
-- **摄像头集成** - USB 摄像头图像流，YUV 到 RGB 转换
-- **地图显示** - 基于瓦片渲染的交互式地图，使用 QMapControl
-- **天气信息** - 实时天气数据与图形化界面
 - **模块化架构** - 清晰的关注点分离，专用功能模块
 
 ### 🏗️ 系统架构图
@@ -445,21 +336,11 @@ The following images showcase the real-world functionality of the TopCarBoard_M 
 ### 📁 项目结构
 
 ```
-TopCarBoard_M/
+Linux_Camera/
 ├── 📁 根目录
 │   ├── main.cpp                    # 应用程序入口
-│   ├── mainwidget.cpp/.h          # 主菜单界面
-│   └── TopCarBoard_M.pro          # Qt 项目配置文件
-│
-├── 📊 Dashboard/                   # 仪表盘模块
-│   ├── widget.cpp/.h/.ui          # 仪表盘界面实现
-│   ├── res.qrc                    # 资源文件
-│   └── 🖼️ icons/                  # 仪表盘图标和图片
-│
-├── 🗺️ QMapDemo/                   # 地图显示模块
-│   ├── multidemo.cpp/.h           # 地图组件实现
-│   ├── gps_modul.cpp/.h           # GPS 集成
-│   └── src/QMapControl/           # 开源 QMapControl 库
+│   ├── mainwidget.cpp/.h          # 主界面
+│   └── Linux_Camera.pro          # Qt 项目配置文件
 │
 ├── 📡 GPSProcess/                  # GPS 数据处理
 │   ├── GPSProcess.cpp/.h          # NMEA 协议解析
@@ -474,31 +355,17 @@ TopCarBoard_M/
 │   ├── videodevice.cpp/.h         # V4L2 摄像头接口
 │   └── YUV 到 RGB 转换
 │
-├── 🌤️ Weather/                    # 天气信息
-│   ├── mainwindow.cpp/.h/.ui      # 天气界面
-│   ├── weatherdata.h              # 数据结构
-│   └── 基于网络的天气 API
-│
 └── 🔧 bin/                        # 编译后的可执行文件
-    └── TopCarBoard_M
+    └── Linux_Camera
 ```
 
 ### 🔧 模块详细说明
 
 #### 🏠 MainWidget（中央控制器）
-- **功能**：主菜单界面，包含 6 个功能模块
+- **功能**：主界面，包含功能模块
 - **特性**：
-  - 网格式图标布局（2×3）
   - 模块导航和窗口管理
   - 自动清理的资源管理
-
-#### 📊 仪表盘模块
-- **功能**：实时仪表盘显示
-- **特性**：
-  - 指针动画的模拟速度表
-  - 燃油液位和温度表
-  - LED 指示灯控制（转向信号灯、危险警告灯）
-  - 基于 ADC 的电位器速度输入
 
 #### 📡 GPS 处理模块
 - **功能**：实时 GPS 数据采集和解析
@@ -525,23 +392,6 @@ TopCarBoard_M/
   - YUV422 到 RGB24 色彩空间转换
   - 帧率优化
   - 错误处理和设备管理
-
-#### 🗺️ 地图显示模块
-- **功能**：交互式地图可视化
-- **技术**：QMapControl 库
-- **特性**：
-  - 基于瓦片的地图渲染
-  - 在线地图数据获取
-  - GPS 位置叠加
-  - 缩放和平移功能
-
-#### 🌤️ 天气模块
-- **功能**：实时天气信息显示
-- **特性**：
-  - 基于网络的天气 API 集成
-  - 温度和湿度显示
-  - 天气图标可视化
-  - JSON 数据解析
 
 ### 🚀 安装和配置
 
@@ -585,7 +435,7 @@ fastboot flash kernel zImage
 
 ```bash
 # 进入项目目录
-cd TopCarBoard_M/
+cd Linux_Camera/
 
 # 生成 Makefile
 qmake
@@ -618,20 +468,17 @@ make
    ```bash
    # 将项目复制到 U 盘，然后复制到开发板
    # 在目标板上：
-   chmod +x TopCarBoard_M
-   ./TopCarBoard_M
+   chmod +x Linux_Camera
+   ./Linux_Camera
    ```
 
 ### 🧪 测试和验证
 
 | 模块 | 测试标准 |
 |------|----------|
-| **仪表盘** | LED 控制、速度表对 ADC 输入的响应 |
 | **GPS** | 坐标精度、速度计算 |
 | **摄像头** | 实时视频流、颜色转换 |
 | **IMU** | 运动检测、碰撞报警 |
-| **地图** | 瓦片加载、GPS 位置叠加 |
-| **天气** | 网络连接、数据解析 |
 
 ### ⚙️ 配置说明
 
@@ -642,55 +489,7 @@ make
 
 ### 🎬 系统演示效果
 
-以下图片展示了 TopCarBoard_M 系统的实际功能演示：
-
-#### 📱 主界面显示
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image1.jpg" alt="主界面" width="600">
-<p><em>主菜单界面，包含 6 个功能模块，采用 2×3 网格布局</em></p>
-</div>
-
-#### 📊 仪表盘面板
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image2.png" alt="仪表盘面板" width="600">
-<p><em>交互式仪表盘，点击复选框可控制 LED，与仪表板转向灯、双闪灯同步闪烁。旋转滑动变阻器调节 ADC 采集电压值，速度实时更新</em></p>
-</div>
-
-#### 📹 USB 摄像头实时画面
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image3.png" alt="USB摄像头" width="600">
-<p><em>USB 摄像头实时视频采集，YUV 到 RGB 颜色空间转换</em></p>
-</div>
-
-#### 🗺️ 交互式地图显示
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image4.png" alt="地图显示" width="600">
-<p><em>实时地图加载，通过鼠标和鼠标滚轮调整地图画面。基于瓦片的地图渲染，交互流畅</em></p>
-</div>
-
-#### 📱 IMU 传感器数据可视化
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image5.png" alt="IMU数据" width="600">
-<p><em>IMU 传感器三轴加速度、角速度、姿态角度数据显示</em></p>
-</div>
-
-#### ⚠️ 运动检测报警
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image6.png" alt="运动检测" width="600">
-<p><em>IMU 运动检测功能演示 - 挥动 IMU 传感器模拟加速度剧烈变化，蜂鸣器鸣叫，显示屏显示警告信息</em></p>
-</div>
-
-#### 📡 GPS 定位系统
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image7.png" alt="GPS定位" width="600">
-<p><em>GPS 定位数据显示，可采集当前经纬度等信息。与手机 GPS 对比，定位准确</em></p>
-</div>
-
-#### 🌤️ 天气时间信息
-<div align="center">
-<img src="https://github.com/IllusionMZX/4412-CarDashborad/blob/main/image/image8.png" alt="天气显示" width="600">
-<p><em>通过网络获取实时天气和时间信息显示</em></p>
-</div>
+系统提供了相机图像处理、GPS 定位和 IMU 传感器监控的实际功能演示。
 
 ### 🔧 故障排除
 
